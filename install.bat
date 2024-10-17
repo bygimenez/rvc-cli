@@ -15,6 +15,7 @@ call :cleanup
 call :install_miniconda
 call :create_conda_env
 call :install_dependencies
+call :install_prerequisites
 
 echo RVC CLI has been installed successfully!
 echo.
@@ -70,6 +71,14 @@ pip install -r "%INSTALL_DIR%\requirements.txt" || goto :error
 pip install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --upgrade --index-url https://download.pytorch.org/whl/cu121 || goto :error
 call "%MINICONDA_DIR%\condabin\conda.bat" deactivate
 echo Dependencies installation complete.
+echo.
+exit /b 0
+
+:install_prerequisites
+echo Installing prerequisites...
+"%ENV_DIR%\python.exe" rvc_cli.py prerequisites || goto :error
+if errorlevel 1 goto :error
+echo Prerequisites installation complete.
 echo.
 exit /b 0
 
